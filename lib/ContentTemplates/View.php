@@ -7,10 +7,14 @@ use \Twig_Autoloader,
   Twig_Loader_String,
   Twig_Loader_Filesystem,
   Twig_Environment;
+use \ContentTemplates\Terms;
+use \ContentTemplates\Post;
+use \COntentTemplates\Functions;
 
 class View {
   private $cache;
   private static $instance;
+  private $env;
 
   public function __construct() {
     require_once __DIR__.'/../../vendor/twig/twig/lib/Twig/Autoloader.php';
@@ -29,7 +33,7 @@ class View {
     if (is_numeric($post)) {
       get_post($post);
     }
-    if (file_exists(__DIR__.$this->views_dir."/$content")) {
+    if (file_exists(Plugin::get_views_dir()."/$content")) {
       return $this->render_from_file($content, $data);
     } else {
       return $this->render_from_string($content, $data);
@@ -37,18 +41,27 @@ class View {
   }
 
   private function render_from_file($file, $data) {
-    $loader = new Twig_Loader_Filesystem(__DIR__.Plugin::get_views_dir());
-    $twig = new Twig_Environment($loader, array('cache'=> __DIR__.Plugin::get_cache_dir()));
-    $template = $twig->loadTemplate($file_or_string);
+    $loader = new Twig_Loader_Filesystem(Plugin::get_views_dir());
+    $twig = new Twig_Environment($loader, array());
+    $template = $twig->loadTemplate($file);
     $rendered = $template->render($data);
     return $rendered;
   }
 
   private function render_from_string($string, $data) {
-    $loader = new Twig_Loader_String();
-    $twig = new Twig_Environment($loader);
-    $rendered = $twig->render($string, $data);
+    if (!$this->env) {
+      $loader = new Twig_Loader_String();
+      $this->env = new Twig_Environment($loader);
+      $this->load_functions();
+    }
+    $rendered = $this->env->render($string, $data);
     return $rendered;
+  }
+
+  private function load_functions() {
+    $this->env->addGlobal( 'terms', new Terms() );
+    $this->env->addGLobal( 'query', new Query() );
+    $this->env->addGlobal( 'function', new Functions() );
   }
 
   public static function hook($content,$post=null) {
@@ -56,7 +69,7 @@ class View {
     if (is_admin())
       return $content;
     $hash = md5($content);
-    $cache_content = wp_cache_get($hash, 'post');
+    $cache_content = wp_cache_get($hash, 'posts');
     if ( $cache_content ) {
       return $cache_content;
     }
@@ -73,8 +86,10 @@ class View {
       }
       $data[$key] = $value;
     }
+
     // first render the post_content
-    $data['post_content'] = $view->render_from_string($post->post_content, $data);
+
+    $data['post_content'] = $content = $view->render_from_string($post->post_content, $data);
     // now render the other templates
     $templates = apply_filters('content_templates_default', array(), $data);
     if( is_numeric($template_id) ) {
@@ -86,7 +101,7 @@ class View {
     }
 
     $content = html_entity_decode($content);
-    wp_cache_set($hash, $content, 'post');
+    wp_cache_set($hash, $content, 'posts');
     return $content;
   }
 
