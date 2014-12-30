@@ -10,7 +10,7 @@ class Settings {
 		self::$instance = $this;
 	}
 
-	public function instance() {
+	static public function instance() {
 		if ( !self::$instance ) {
 			new Self();
 		}

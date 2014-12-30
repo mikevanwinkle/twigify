@@ -102,18 +102,18 @@ class ContentTemplatesPlugin {
 		$roles = @$settings->get('roles') ? array_values($settings->get('roles')) : array('administrator');
 		$params = array(
 			'labels'		     			=> $labels,
-			'public'             	=> true,
+			'public'             	=> false,
 			'publicly_queryable' 	=> true,
 			'show_ui'            	=> true,
 			'show_in_menu'       	=> 'twigify',
 			'exclude_from_search' => true,
-			'supports'						=> array('title','editor','custom-fields'),
+			'supports'						=> array('title','editor','revisions'),
 			'capability_types'		=> array('ctemplates'),
 			'meta_map_cap'				=> true,
 		);
 		register_post_type('ctemplates', $params);
 
-		// do the meta mapping
+		// do the meta mapping thing
 		foreach ( $roles as $role ) {
 			$role = get_role($role);
 			$role->add_cap('read_ctemplates');
@@ -122,6 +122,7 @@ class ContentTemplatesPlugin {
 			$role->add_cap('publish_ctemplates');
 		}
 
+		// this removes the tinymce from template pages to prevent parsing confusions
 		add_filter( 'user_can_richedit', function() {
 			global $post;
 			if ( 'ctemplates' == $post->post_type ) {
@@ -158,6 +159,9 @@ class ContentTemplatesPlugin {
 		$views = \ContentTemplates\View::instance();
 		$data = array();
 		$data['settings'] = self::settings();
+		if (!isset($data['settings']['roles'])) {
+			$data['settings']['roles'] = array();
+		}
 		$roles = $wp_roles->roles;
 		foreach ($roles as $name=>$role) {
 				if (in_array($name, array_values($data['settings']['roles']))) {
