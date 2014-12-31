@@ -160,7 +160,7 @@ class ContentTemplatesPlugin {
 		$data = array();
 		$data['settings'] = self::settings();
 		if (!isset($data['settings']['roles'])) {
-			$data['settings']['roles'] = array()
+			$data['settings']['roles'] = array();
 		}
 		$roles = $wp_roles->roles;
 		foreach ($roles as $name=>$role) {
