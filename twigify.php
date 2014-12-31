@@ -57,7 +57,7 @@ class ContentTemplatesPlugin {
 	}
 
 	static function activate() {
-		if ( ContentTemplatesPlugin::settings() ) {
+		if ( self::settings() ) {
 		}
 	}
 
@@ -134,7 +134,7 @@ class ContentTemplatesPlugin {
 	}
 
 	static function settings() {
-		$plugin = ContentTemplatesPlugin::instance();
+		$plugin = self::instance();
 		return $plugin->get_settings();
 	}
 
@@ -158,7 +158,7 @@ class ContentTemplatesPlugin {
 		$templates = new WP_Query(array('post_type'=>'ctemplates'));
 		$views = \ContentTemplates\View::instance();
 		$data = array();
-		$data['settings'] = ContentTemplatesPlugin::settings();
+		$data['settings'] = self::settings();
 		if (!isset($data['settings']['roles'])) {
 			$data['settings']['roles'] = array();
 		}
@@ -173,10 +173,10 @@ class ContentTemplatesPlugin {
 	}
 
 	static function instance() {
-		if ( !ContentTemplatesPlugin::$instance ) {
-			ContentTemplatesPlugin::$instance = new Self();
+		if ( !self::$instance ) {
+			self::$instance = new ContentTemplatesPlugin();
 		}
-		return ContentTemplatesPlugin::$instance;
+		return self::$instance;
 	}
 
 	static function get_views_dir() {
@@ -192,6 +192,6 @@ class ContentTemplatesPlugin {
 	}
 
 	static function textdomain() {
-		return ContentTemplatesPlugin::$textdomain;
+		return self::$textdomain;
 	}
 }
