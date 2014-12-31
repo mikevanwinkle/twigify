@@ -12,7 +12,7 @@ class Settings {
 
 	static public function instance() {
 		if ( !self::$instance ) {
-			new Self();
+			new Settings();
 		}
 		return self::$instance;
 	}

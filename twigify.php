@@ -57,7 +57,7 @@ class ContentTemplatesPlugin {
 	}
 
 	static function activate() {
-		if ( ContentTemplatesPlugin::settings() ) {
+		if ( self::settings() ) {
 		}
 	}
 
@@ -134,7 +134,7 @@ class ContentTemplatesPlugin {
 	}
 
 	static function settings() {
-		$plugin = ContentTemplatesPlugin::instance();
+		$plugin = self::instance();
 		return $plugin->get_settings();
 	}
 
@@ -158,9 +158,9 @@ class ContentTemplatesPlugin {
 		$templates = new WP_Query(array('post_type'=>'ctemplates'));
 		$views = \ContentTemplates\View::instance();
 		$data = array();
-		$data['settings'] = ContentTemplatesPlugin::settings();
+		$data['settings'] = self::settings();
 		if (!isset($data['settings']['roles'])) {
-			$data['settings']['roles'] = array();
+			$data['settings']['roles'] = array()
 		}
 		$roles = $wp_roles->roles;
 		foreach ($roles as $name=>$role) {
@@ -174,7 +174,7 @@ class ContentTemplatesPlugin {
 
 	static function instance() {
 		if ( !self::$instance ) {
-			self::$instance = new ContentTemplatesPlugin();
+			self::$instance = new Self();
 		}
 		return self::$instance;
 	}
