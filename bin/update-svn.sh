@@ -10,7 +10,7 @@ SVNPATH="/tmp/$PLUGINSLUG"
 SVNURL="http://plugins.svn.wordpress.org/$PLUGINSLUG"
 SVNUSER="mpvanwinkle77"
 PLUGINDIR="$CURRENTDIR"
-MAILFILE="$PLUGINSLUG.php"
+MAINFILE="$PLUGINSLUG.php"
 
 # git config
 GITPATH="$PLUGINDIR/" # this file should be in the base of your git repository
