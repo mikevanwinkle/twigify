@@ -1,19 +1,17 @@
 language: php
-
 php:
-  - 5.4
-  - 5.5
-
+- 5.4
+- 5.5
 env:
+  matrix:
   - WP_VERSION=latest WP_MULTISITE=0
   - WP_VERSION=latest WP_MULTISITE=1
   - WP_VERSION=3.8 WP_MULTISITE=0
   - WP_VERSION=3.8 WP_MULTISITE=1
-
+  global:
+    secure: NUqH6awc5jBeu2xBm175Y8iDKhVJRs4AFXFco6pjSU93FKM8ZW2jQ8D/DfvjDC1Ru3iEr1VMDNVvtOii6+LQffT0I8D+c673xjmrlZKPYDJFV1jVo5G8PZV3/BQxIjtoemeEi2lMhv4+lCjicpEZTgOY0wfRqAeYVwpCbCt7vCg=
 before_script:
-  - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-
+- bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
 after_success:
-  - bash bin/update-svn.sh
-
+- bash bin/update-svn.sh
 script: phpunit
