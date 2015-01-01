@@ -1,4 +1,5 @@
 #! /bin/bash
+# based on https://github.com/GaryJones/wordpress-plugin-git-flow-svn-deploy
 
 PLUGINSLUG='twigify'
 
