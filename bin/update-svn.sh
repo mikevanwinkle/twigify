@@ -40,7 +40,7 @@ git push origin master
 git push origin master --tags
 
 echo "Creating local copy of SVN repo trunk ..."
-svn checkout $SVNURL --username=$SVNUSER --password=$SVNPASS $SVNPATH --depth immediate 
+svn checkout $SVNURL --username=$SVNUSER --password=$SVNPASS $SVNPATH  
 svn update --username=$SVNUSER --password=$SVNPASS --quiet $SVNPATH/trunk --set-depth infinity
 
 echo "Ignoring GitHub specific files"
