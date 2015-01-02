@@ -4,6 +4,6 @@ class DoubleColonClass
 {
     public static function identifySelf()
     {
-        return static::class;
+        return get_class(self);
     }
 }
