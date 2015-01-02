@@ -53,3 +53,5 @@ No screenshots available yet
 = 1.0-beta =
 * Initial release
 
+= 1.1-beta =
+* Theme Functions: get_bloginfo, get_sidebar, get_footer, the_time, comments_popup_link, the_title, the_category, the_author, the_ID, edit_post_link, wp_list_bookmarks, comments_template, wp_list_pages, wp_list_categories, get_post_meta, posts_nav_link, get_search_form, custom 
